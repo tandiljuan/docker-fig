@@ -1,0 +1,19 @@
+composer:
+    build: dockerfiles/composer/
+    volumes:
+        - laravel/:/opt/laravel:rw
+    hostname: composer
+phpfpm:
+    build: dockerfiles/phpfpm/
+    volumes:
+        - laravel/:/opt/webapp:rw
+    hostname: phpfpm
+nginx:
+    build: dockerfiles/nginx/
+    volumes_from:
+        - phpfpm
+    hostname: nginx
+    ports:
+        - "80:80"
+    links:
+        - phpfpm
